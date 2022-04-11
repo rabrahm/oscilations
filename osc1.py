@@ -6,8 +6,8 @@ import seaborn as sns
 import matplotlib.cm as cm
 from matplotlib import rc,rcParams
 
-def make_arrow(x,y,dx,dy,color,width=0.05):
-	arrow = ax1.arrow(x,y,dx,dy,color=color,width=width)
+def make_arrow(ax1,x,y,dx,dy,color,width=0.05):
+	arrow = ax1.arrow(x,y,dx,dy,color=color,width=width, zorder=100)
 	return arrow,
 
 sns.set_context("talk")
@@ -88,14 +88,14 @@ for t in ts:
 	v = v + a*dt
 	a = acc(x)
 	if count % 100 == 0:
-		im, = ax1.plot(x,0,'ro',markersize=80)
+		im, = ax1.plot(x,0,'ro',markersize=80, zorder=0)
 		im2, = ax2.plot(tts,ass,'b',linewidth=6)
 		im5, = ax2.axvline(tts[-1]),
 		im3, = ax3.plot(tts,vss,'b',linewidth=6)
 		im6, = ax3.axvline(tts[-1]),
 		im4, = ax4.plot(tts,xss,'b',linewidth=6)
 		im7, = ax4.axvline(tts[-1]),
-		force, = make_arrow(x,0,Force(x),0,'black')
+		force, = make_arrow(ax1, x,0,Force(x),0,'black')
 		ims.append([im,im2,im3,im4,im5,im6,im7,force])
 	xss.append(x)
 	vss.append(v)
@@ -112,7 +112,7 @@ ax3.tick_params(axis='x', labelsize=30)
 ax4.tick_params(axis='x', labelsize=30)
 fig.tight_layout()
 ani = animation.ArtistAnimation(fig, ims, interval=50, blit=True, repeat_delay=1000)
-ani.save('osc1.mp4', writer=writer)
+ani.save('osc1-zorder.mp4', writer=writer)
 
 #print(x,y)
 #plot(xs,ys,'ro')
